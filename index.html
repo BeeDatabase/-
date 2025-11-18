@@ -3,124 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bee Expert V7.0 Enterprise</title>
+    <title>蜂場專家 - 智慧管理系統</title>
+    
+    <meta property="og:title" content="蜂場專家">
+    <meta property="og:description" content="專業養蜂數位管理系統">
+    <meta name="theme-color" content="#1a1a1a">
     
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 
     <div id="splashScreen" class="splash-screen">
         <div class="splash-content">
-            <span class="material-icons-round splash-icon">hive</span>
-            <h1>Bee Expert <span class="version-tag">V7.0</span></h1>
-            <p>世紀帝國版 • 載入中...</p>
-            <div class="loading-bar"><div class="loading-progress"></div></div>
-        </div>
-    </div>
-
-    <div id="securityLock" class="overlay-screen hidden">
-        <div class="glass-box lock-box">
-            <span class="material-icons-round lock-icon">lock</span>
-            <h2>系統已鎖定</h2>
-            <p>請輸入安全 PIN 碼</p>
-            <input type="password" id="pinInput" maxlength="4" placeholder="••••">
-            <button class="btn-primary" onclick="System.unlock()">解鎖</button>
+            <div class="logo-hexagon">
+                <span class="material-icons-round">hive</span>
+            </div>
+            <div class="splash-text">
+                <h1>蜂場專家</h1>
+                <p>系統載入中...</p>
+            </div>
+            <div class="loading-bar"><div class="progress"></div></div>
         </div>
     </div>
 
     <aside class="sidebar">
         <div class="brand-area">
-            <span class="material-icons-round logo">workspace_premium</span>
+            <div class="logo-icon"><span class="material-icons-round">workspace_premium</span></div>
             <div class="brand-text">
-                <h2>Bee Expert</h2>
-                <small>Enterprise OS</small>
+                <h2>蜂場專家</h2>
+                <small>智慧管理系統</small>
             </div>
         </div>
-        <div class="user-profile">
-            <div class="avatar">👨‍🌾</div>
-            <div class="user-info">
-                <span id="farmNameDisplay">我的專業蜂場</span>
-                <span class="status-dot online"></span> 線上
-            </div>
+        
+        <div class="nav-scroll-area">
+            <div class="nav-group">戰情指揮</div>
+            <button class="nav-btn active" onclick="Router.go('dashboard')"><span class="material-icons-round">dashboard</span>戰情儀表板</button>
+            <button class="nav-btn" onclick="Router.go('map')"><span class="material-icons-round">map</span>視覺化地圖</button>
+            <button class="nav-btn" onclick="Router.go('tasks')"><span class="material-icons-round">assignment_turned_in</span>SOP 工作排程</button>
+
+            <div class="nav-group">生產技術</div>
+            <button class="nav-btn" onclick="Router.go('breeding')"><span class="material-icons-round">pets</span>精密育王</button>
+            <button class="nav-btn" onclick="Router.go('health')"><span class="material-icons-round">medical_services</span>病害防禦</button>
+            <button class="nav-btn" onclick="Router.go('production')"><span class="material-icons-round">factory</span>生產加工</button>
+            <button class="nav-btn" onclick="Router.go('inventory')"><span class="material-icons-round">inventory_2</span>資材庫存</button>
+
+            <div class="nav-group">商業營運</div>
+            <button class="nav-btn" onclick="Router.go('crm')"><span class="material-icons-round">groups</span>客戶 CRM</button>
+            <button class="nav-btn" onclick="Router.go('finance')"><span class="material-icons-round">monetization_on</span>財務與銷售</button>
+            <button class="nav-btn" onclick="Router.go('logistics')"><span class="material-icons-round">local_shipping</span>轉場物流</button>
+
+            <div class="nav-group">環境與法規</div>
+            <button class="nav-btn" onclick="Router.go('science')"><span class="material-icons-round">science</span>環境科學</button>
+            <button class="nav-btn" onclick="Router.go('land')"><span class="material-icons-round">terrain</span>林地管理</button>
+            <button class="nav-btn" onclick="Router.go('compliance')"><span class="material-icons-round">gavel</span>法規合規</button>
+            
+            <div class="nav-group">永續與風險</div>
+            <button class="nav-btn" onclick="Router.go('risk')"><span class="material-icons-round">security</span>風險防禦</button>
+            <button class="nav-btn" onclick="Router.go('esg')"><span class="material-icons-round">eco</span>ESG 永續</button>
+            <button class="nav-btn" onclick="Router.go('settings')"><span class="material-icons-round">settings_suggest</span>系統設定</button>
         </div>
-        <nav class="nav-menu">
-            <button class="nav-btn active" data-tab="dashboard" onclick="Router.go('dashboard')">
-                <span class="material-icons-round">dashboard</span> 戰情儀表
-            </button>
-            <button class="nav-btn" data-tab="map" onclick="Router.go('map')">
-                <span class="material-icons-round">map</span> 蜂場地圖
-            </button>
-            <button class="nav-btn" data-tab="breeding" onclick="Router.go('breeding')">
-                <span class="material-icons-round">pets</span> 精密育王
-            </button>
-            <button class="nav-btn" data-tab="health" onclick="Router.go('health')">
-                <span class="material-icons-round">medical_services</span> 病害防禦
-            </button>
-            <button class="nav-btn" data-tab="production" onclick="Router.go('production')">
-                <span class="material-icons-round">factory</span> 生產加工
-            </button>
-            <button class="nav-btn" data-tab="business" onclick="Router.go('business')">
-                <span class="material-icons-round">trending_up</span> 商業 CRM
-            </button>
-            <button class="nav-btn" data-tab="inventory" onclick="Router.go('inventory')">
-                <span class="material-icons-round">inventory_2</span> 資材庫存
-            </button>
-            <button class="nav-btn" data-tab="science" onclick="Router.go('science')">
-                <span class="material-icons-round">science</span> 環境科學
-            </button>
-            <button class="nav-btn" data-tab="team" onclick="Router.go('team')">
-                <span class="material-icons-round">groups</span> 團隊任務
-            </button>
-            <button class="nav-btn" data-tab="settings" onclick="Router.go('settings')">
-                <span class="material-icons-round">settings_suggest</span> 系統核心
-            </button>
-        </nav>
     </aside>
 
     <main class="main-window">
         <header class="top-header">
             <div class="header-left">
-                <h2 id="currentPageTitle">戰情儀表板</h2>
-                <div class="weather-pill">
-                    <span class="material-icons-round">wb_sunny</span>
-                    <span id="liveTemp">--°C</span>
-                </div>
+                <button class="mobile-menu-btn" onclick="System.toggleSidebar()"><span class="material-icons-round">menu</span></button>
+                <h2 id="pageTitle">戰情儀表板</h2>
+                <div class="status-badge online">連線正常</div>
             </div>
             <div class="header-right">
-                <button class="icon-btn" onclick="System.toggleTheme()" title="切換日夜"><span class="material-icons-round">dark_mode</span></button>
-                <button class="icon-btn" onclick="System.toggleFullScreen()" title="專注模式"><span class="material-icons-round">fullscreen</span></button>
-                <button class="icon-btn notification-btn"><span class="material-icons-round">notifications</span><span class="badge">3</span></button>
+                <div class="weather-widget glass-pill">
+                    <span class="material-icons-round">wb_sunny</span>
+                    <span id="headerTemp">--°C</span>
+                </div>
+                <button class="icon-btn" onclick="System.toggleTheme()"><span class="material-icons-round">dark_mode</span></button>
+                <button class="icon-btn" onclick="System.toggleFullScreen()"><span class="material-icons-round">fullscreen</span></button>
             </div>
         </header>
 
-        <div id="app-container" class="content-area">
+        <div id="app-content" class="content-area">
             </div>
     </main>
 
     <nav class="bottom-nav">
-        <button class="nav-item active" onclick="Router.go('dashboard')"><span class="material-icons-round">home</span></button>
-        <button class="nav-item" onclick="Router.go('map')"><span class="material-icons-round">grid_view</span></button>
-        <button class="fab-main" onclick="QuickAction.open()"><span class="material-icons-round">add</span></button>
-        <button class="nav-item" onclick="Router.go('production')"><span class="material-icons-round">edit_note</span></button>
-        <button class="nav-item" onclick="Router.go('settings')"><span class="material-icons-round">menu</span></button>
+        <button class="nav-item active" onclick="Router.go('dashboard')"><span class="material-icons-round">dashboard</span></button>
+        <button class="nav-item" onclick="Router.go('map')"><span class="material-icons-round">map</span></button>
+        <div class="fab-wrapper">
+            <button class="fab-main" onclick="QuickAction.toggle()"><span class="material-icons-round">add</span></button>
+        </div>
+        <button class="nav-item" onclick="Router.go('breeding')"><span class="material-icons-round">pets</span></button>
+        <button class="nav-item" onclick="System.toggleSidebar()"><span class="material-icons-round">menu</span></button>
     </nav>
 
-    <div id="quickSheet" class="bottom-sheet hidden">
-        <div class="sheet-content glass-box">
-            <h3>快速紀錄</h3>
-            <div class="quick-grid">
-                <button onclick="Log.quick('feed')"><span class="material-icons-round" style="background:#ffb74d">restaurant</span>餵食</button>
-                <button onclick="Log.quick('check')"><span class="material-icons-round" style="background:#4fc3f7">search</span>檢查</button>
-                <button onclick="Log.quick('harvest')"><span class="material-icons-round" style="background:#81c784">opacity</span>採收</button>
-                <button onclick="Log.quick('meds')"><span class="material-icons-round" style="background:#e57373">healing</span>用藥</button>
-            </div>
-            <button class="btn-close" onclick="QuickAction.close()">取消</button>
+    <div id="quickSheet" class="quick-sheet hidden">
+        <div class="sheet-grid">
+            <button onclick="Log.quick('feed')"><span class="material-icons-round color-orange">restaurant</span>餵食</button>
+            <button onclick="Log.quick('check')"><span class="material-icons-round color-blue">search</span>巡場</button>
+            <button onclick="Log.quick('meds')"><span class="material-icons-round color-red">healing</span>用藥</button>
+            <button onclick="Log.quick('harvest')"><span class="material-icons-round color-green">opacity</span>採收</button>
+            <button onclick="Log.quick('note')"><span class="material-icons-round color-purple">edit</span>筆記</button>
+            <button onclick="QuickAction.toggle()"><span class="material-icons-round color-grey">close</span>取消</button>
         </div>
     </div>
 
