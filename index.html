@@ -7,6 +7,7 @@
     
     <meta property="og:title" content="蜂場專家">
     <meta name="theme-color" content="#1a1a1a">
+    <meta name="description" content="專業養蜂數位管理系統 V20.0">
     
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
@@ -88,13 +89,27 @@
     </main>
 
     <nav class="bottom-nav">
-        <button class="nav-item active" onclick="Router.go('dashboard')"><span class="material-icons-round">dashboard</span></button>
-        <button class="nav-item" onclick="Router.go('map')"><span class="material-icons-round">map</span></button>
+        <button class="nav-item active" onclick="Router.go('dashboard')">
+            <span class="material-icons-round">dashboard</span>
+            <span class="nav-label">首頁</span>
+        </button>
+        <button class="nav-item" onclick="Router.go('map')">
+            <span class="material-icons-round">map</span>
+            <span class="nav-label">地圖</span>
+        </button>
         <div class="fab-wrapper">
-            <button class="fab-main" onclick="QuickAction.toggle()"><span class="material-icons-round">add</span></button>
+            <button class="fab-main" onclick="QuickAction.toggle()">
+                <span class="material-icons-round">add</span>
+            </button>
         </div>
-        <button class="nav-item" onclick="Router.go('breeding')"><span class="material-icons-round">pets</span></button>
-        <button class="nav-item" onclick="System.toggleSidebar()"><span class="material-icons-round">menu</span></button>
+        <button class="nav-item" onclick="Router.go('tasks')">
+            <span class="material-icons-round">assignment</span>
+            <span class="nav-label">工作</span>
+        </button>
+        <button class="nav-item" onclick="System.toggleSidebar()">
+            <span class="material-icons-round">menu</span>
+            <span class="nav-label">更多</span>
+        </button>
     </nav>
 
     <div id="quickSheet" class="quick-sheet hidden">
