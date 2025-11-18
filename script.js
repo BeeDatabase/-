@@ -1,14 +1,11 @@
 /**
- * BEE EXPERT - SMART SYSTEM CORE
- * Version: 18.1 (Stable)
+ * BEE EXPERT - SMART SYSTEM CORE V19.0
+ * RWD & Professional Edition
  */
 
 const System = {
     init: function() {
-        console.log("System Starting...");
-        
-        // 1. 強制移除載入畫面 (Fail-safe)
-        // 無論發生什麼事，1.5秒後一定要讓使用者看到畫面
+        // 1. 移除載入畫面
         setTimeout(() => {
             const splash = document.getElementById('splashScreen');
             if(splash) {
@@ -17,26 +14,25 @@ const System = {
             }
         }, 1500);
 
-        // 2. 啟動路由
+        // 2. 路由啟動
         const lastPage = localStorage.getItem('bee_last_page') || 'dashboard';
         Router.go(lastPage);
         
-        // 3. 啟動時鐘與天氣
+        // 3. 天氣模擬
         this.startClock();
         
-        // 4. 自動儲存監聽
+        // 4. 自動儲存
         this.initAutoSave();
     },
 
     toggleSidebar: function() {
-        document.querySelector('.sidebar').classList.toggle('open');
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.getElementById('overlay');
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('hidden');
     },
 
-    toggleTheme: function() {
-        const body = document.body;
-        // 簡單切換背景色示意，實際需配合 CSS 變數
-        alert("目前預設為深色專業模式");
-    },
+    toggleTheme: function() { alert("目前為專業深色模式"); },
 
     toggleFullScreen: function() {
         if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(e=>{});
@@ -65,17 +61,16 @@ const System = {
     }
 };
 
-// --- 路由引擎 ---
 const Router = {
     go: function(pageId) {
-        // 更新選單
+        // UI 更新
         document.querySelectorAll('.nav-btn, .nav-item').forEach(el => el.classList.remove('active'));
         const deskBtn = document.querySelector(`.nav-btn[onclick="Router.go('${pageId}')"]`);
         const mobBtn = document.querySelector(`.nav-item[onclick="Router.go('${pageId}')"]`);
         if(deskBtn) deskBtn.classList.add('active');
         if(mobBtn) mobBtn.classList.add('active');
 
-        // 渲染
+        // 渲染內容
         const content = document.getElementById('app-content');
         const title = document.getElementById('pageTitle');
         
@@ -92,20 +87,24 @@ const Router = {
                         <span class="material-icons-round" style="font-size:3rem; color:#555">construction</span>
                         <h3>功能建置中</h3><p style="color:#777">此模組將於下次更新啟用</p>
                     </div>`;
+                    if(title) title.innerText = "建置中";
                 }
                 content.style.opacity = 1;
             }, 200);
         }
         
-        if(window.innerWidth <= 900) document.querySelector('.sidebar').classList.remove('open');
+        // 手機版自動收起側邊欄
+        if(window.innerWidth <= 1024) {
+            document.querySelector('.sidebar').classList.remove('open');
+            document.getElementById('overlay').classList.add('hidden');
+        }
         localStorage.setItem('bee_last_page', pageId);
     }
 };
 
-// --- 模組內容 (核心) ---
 const Modules = {
     dashboard: {
-        title: '戰情儀表板',
+        title: '營運總覽',
         render: () => `
             <div class="grid-4">
                 <div class="glass-panel" style="border-left: 4px solid var(--primary)">
@@ -156,7 +155,7 @@ const Modules = {
     },
     
     map: {
-        title: '視覺化地圖',
+        title: '蜂場地圖',
         render: () => `
             <div class="glass-panel">
                 <div style="margin-bottom:15px; display:flex; gap:15px;">
@@ -164,7 +163,7 @@ const Modules = {
                     <span style="color:var(--warning)">● 普通</span>
                     <span style="color:var(--danger)">● 需注意</span>
                 </div>
-                <div id="hiveGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap:10px;"></div>
+                <div id="hiveGrid" class="grid-auto"></div>
             </div>
         `,
         init: () => {
@@ -178,9 +177,8 @@ const Modules = {
         }
     },
 
-    // 精密育王
     breeding: {
-        title: '精密育王',
+        title: '育王管理',
         render: () => `
             <div class="glass-panel">
                 <div class="panel-title">🧬 育王時間軸</div>
@@ -208,8 +206,7 @@ const Modules = {
             document.getElementById('breedResult').style.display = 'block';
         }
     },
-
-    // 資材庫存
+    
     inventory: {
         title: '資材庫存',
         render: () => `
@@ -222,12 +219,11 @@ const Modules = {
         `,
         init: () => {}
     },
-
-    // 生產加工
+    
     production: {
-        title: '生產加工',
+        title: '生產紀錄',
         render: () => `
-            <div class="glass-panel">
+             <div class="glass-panel">
                 <div class="panel-title">🍯 批號生成</div>
                 <div class="input-group">
                     <select class="input-field"><option>龍眼蜜</option><option>荔枝蜜</option></select>
@@ -238,8 +234,7 @@ const Modules = {
         `,
         init: () => {}
     },
-
-    // 設定
+    
     settings: {
         title: '系統設定',
         render: () => `
@@ -257,7 +252,6 @@ const Modules = {
     }
 };
 
-// --- 工具庫 ---
 const Utils = {
     restoreData: () => {
         document.querySelectorAll('input, select').forEach(el => {
@@ -296,7 +290,6 @@ const Utils = {
     }
 };
 
-// --- 快速動作 ---
 const QuickAction = {
     toggle: () => document.getElementById('quickSheet').classList.toggle('visible')
 };
@@ -304,5 +297,4 @@ const Log = {
     quick: (t) => { alert('已紀錄: '+t); QuickAction.toggle(); }
 };
 
-// 啟動
 document.addEventListener('DOMContentLoaded', () => System.init());
