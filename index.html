@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>蜂場專家 - 智慧管理系統</title>
     <meta name="theme-color" content="#1a1a1a">
-    <meta name="description" content="台灣頂級養蜂數位雙胞胎系統 V28.0">
+    <meta name="description" content="台灣頂級養蜂數位雙胞胎系統 V29.0">
 
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
@@ -32,7 +32,7 @@
             <div class="logo-icon"><span class="material-icons-round">workspace_premium</span></div>
             <div class="brand-text">
                 <h2>蜂場專家</h2>
-                <small>V28.0 Enterprise</small>
+                <small>V29.0 Enterprise</small>
             </div>
         </div>
         
@@ -120,12 +120,7 @@
             <h3>通知中心</h3>
             <button onclick="NotificationCenter.toggle()" class="icon-btn"><span class="material-icons-round">close</span></button>
         </div>
-        <div id="notifList" class="notif-list">
-            <div class="notif-item info">
-                <span class="material-icons-round">info</span>
-                <div><h4>歡迎使用 V28.0</h4><p>系統升級完成</p></div>
-            </div>
-        </div>
+        <div id="notifList" class="notif-list"></div>
     </div>
 
     <div id="hiveModal" class="overlay hidden">
@@ -134,23 +129,18 @@
                 <h2 id="modalTitle">📦 讀取中...</h2>
                 <button class="icon-btn" onclick="HiveOS.close()"><span class="material-icons-round">close</span></button>
             </div>
-            
-            <div class="hive-status-bar">
-                <div class="status-tag green">👑 新王</div>
-                <div class="status-tag yellow">🐝 7 框</div>
-                <div class="status-tag blue">⚖️ 25kg</div>
+            <div class="hive-status-tags">
+                <span class="status-tag green">👑 新王</span>
+                <span class="status-tag yellow">🐝 7框</span>
+                <span class="status-tag blue">⚖️ 25kg</span>
             </div>
-
             <div class="hive-tabs">
                 <button class="tab-btn active" onclick="HiveOS.switch('check')">檢查</button>
                 <button class="tab-btn" onclick="HiveOS.switch('feed')">餵食</button>
                 <button class="tab-btn" onclick="HiveOS.switch('history')">履歷</button>
             </div>
-
-            <div id="hive-tab-content" class="hive-content">
-                </div>
-
-            <button class="btn-main" onclick="HiveOS.save()">💾 儲存單箱紀錄</button>
+            <div id="hive-tab-content" class="hive-content"></div>
+            <button class="btn-main" onclick="HiveOS.save()">💾 儲存紀錄</button>
         </div>
     </div>
 
