@@ -1,5 +1,5 @@
-/* Bee Expert V40.0 - Offline Service Worker (Cache Buster) */
-const CACHE_NAME = 'bee-expert-v40-offline'; // ★ 每次更新請改這裡的版本號
+/* Bee Expert V42.0 - Offline Service Worker (Cache Buster) */
+const CACHE_NAME = 'bee-expert-v42-offline'; // ★ 更新版本號 V42
 
 const ASSETS = [
     './',
@@ -17,12 +17,12 @@ self.addEventListener('install', (e) => {
     e.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)));
 });
 
-// 攔截請求 (離線優先策略)
+// 攔截請求
 self.addEventListener('fetch', (e) => {
     e.respondWith(caches.match(e.request).then((response) => response || fetch(e.request)));
 });
 
-// 活化：清除舊版本快取 (這是確保所有訪客都看到 V40 的關鍵)
+// 活化與清除舊快取
 self.addEventListener('activate', (e) => {
     e.waitUntil(caches.keys().then((keyList) => Promise.all(keyList.map((key) => {
         if (key !== CACHE_NAME) return caches.delete(key);
