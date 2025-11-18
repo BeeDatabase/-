@@ -3,43 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>蜂場專家 - 智慧連動系統</title>
+    <title>蜂場專家 - 智慧管理系統</title>
     <meta name="theme-color" content="#1a1a1a">
-    
+    <meta name="description" content="台灣頂級養蜂數位雙胞胎系統 V28.0">
+
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
     <div id="splashScreen" class="splash-screen">
         <div class="splash-content">
             <div class="logo-hexagon"><span class="material-icons-round">hive</span></div>
-            <div class="splash-text"><h1>蜂場專家</h1><p>正在連結數據神經網路...</p></div>
+            <div class="splash-text">
+                <h1>蜂場專家</h1>
+                <p>系統載入中...</p>
+            </div>
             <div class="loading-bar"><div class="progress"></div></div>
         </div>
     </div>
 
     <aside class="sidebar">
         <div class="brand-area">
-            <div class="logo-icon"><span class="material-icons-round">hub</span></div> <div class="brand-text"><h2>蜂場專家</h2><small>AI Linkage System</small></div>
+            <div class="logo-icon"><span class="material-icons-round">workspace_premium</span></div>
+            <div class="brand-text">
+                <h2>蜂場專家</h2>
+                <small>V28.0 Enterprise</small>
+            </div>
         </div>
+        
         <div class="nav-scroll-area">
             <div class="nav-group">核心管理</div>
             <button class="nav-btn active" onclick="Router.go('dashboard')"><span class="material-icons-round">dashboard</span>營運總覽</button>
             <button class="nav-btn" onclick="Router.go('map')"><span class="material-icons-round">map</span>蜂場地圖</button>
-            
-            <div class="nav-group">智慧生產</div>
-            <button class="nav-btn" onclick="Router.go('action_feed')"><span class="material-icons-round">restaurant</span>餵食與庫存</button>
-            <button class="nav-btn" onclick="Router.go('action_harvest')"><span class="material-icons-round">opacity</span>採收與利潤</button>
-            <button class="nav-btn" onclick="Router.go('breeding')"><span class="material-icons-round">pets</span>育王管理</button>
+            <button class="nav-btn" onclick="Router.go('tasks')"><span class="material-icons-round">assignment</span>工作排程</button>
 
-            <div class="nav-group">數據中心</div>
-            <button class="nav-btn" onclick="Router.go('logs')"><span class="material-icons-round">history</span>歷史日誌</button>
-            <button class="nav-btn" onclick="Router.go('inventory')"><span class="material-icons-round">inventory_2</span>資材盤點</button>
-            <button class="nav-btn" onclick="Router.go('settings')"><span class="material-icons-round">settings</span>系統設定</button>
+            <div class="nav-group">生態與資源</div>
+            <button class="nav-btn" onclick="Router.go('flora')"><span class="material-icons-round">local_florist</span>蜜源植物圖鑑</button>
+            <button class="nav-btn" onclick="Router.go('science')"><span class="material-icons-round">science</span>環境氣象</button>
+            <button class="nav-btn" onclick="Router.go('inventory')"><span class="material-icons-round">inventory_2</span>資材庫存</button>
+
+            <div class="nav-group">生產技術</div>
+            <button class="nav-btn" onclick="Router.go('breeding')"><span class="material-icons-round">pets</span>育王管理</button>
+            <button class="nav-btn" onclick="Router.go('health')"><span class="material-icons-round">medical_services</span>病害防治</button>
+            <button class="nav-btn" onclick="Router.go('production')"><span class="material-icons-round">factory</span>生產紀錄</button>
+
+            <div class="nav-group">商業與法規</div>
+            <button class="nav-btn" onclick="Router.go('crm')"><span class="material-icons-round">groups</span>客戶訂單</button>
+            <button class="nav-btn" onclick="Router.go('finance')"><span class="material-icons-round">monetization_on</span>財務報表</button>
+            <button class="nav-btn" onclick="Router.go('compliance')"><span class="material-icons-round">gavel</span>法規合規</button>
+            
+            <div class="nav-group">系統</div>
+            <button class="nav-btn" onclick="Router.go('settings')"><span class="material-icons-round">settings_suggest</span>系統設定</button>
         </div>
     </aside>
 
@@ -48,41 +67,95 @@
             <div class="header-left">
                 <button class="mobile-menu-btn" onclick="System.toggleSidebar()"><span class="material-icons-round">menu</span></button>
                 <h2 id="pageTitle">營運總覽</h2>
-                <div id="smartBadge" class="status-badge online">智慧連動中</div>
+                <div class="status-badge online">系統連線正常</div>
             </div>
             <div class="header-right">
-                <button class="icon-btn" onclick="SmartNotif.toggle()" style="position:relative;">
+                <div class="weather-widget glass-pill">
+                    <span class="material-icons-round">wb_sunny</span>
+                    <span id="headerTemp">--°C</span>
+                </div>
+                <button class="icon-btn" onclick="NotificationCenter.toggle()" style="position:relative;">
                     <span class="material-icons-round">notifications</span>
                     <span id="notifDot" class="notif-dot hidden"></span>
                 </button>
+                <button class="icon-btn" onclick="System.toggleTheme()"><span class="material-icons-round">dark_mode</span></button>
             </div>
         </header>
-        <div id="app-content" class="content-area"></div>
+
+        <div id="app-content" class="content-area">
+            </div>
     </main>
 
     <nav class="bottom-nav">
-        <button class="nav-item active" onclick="Router.go('dashboard')"><span class="material-icons-round">dashboard</span><span class="nav-label">首頁</span></button>
-        <button class="nav-item" onclick="Router.go('map')"><span class="material-icons-round">map</span><span class="nav-label">地圖</span></button>
-        <div class="fab-wrapper"><button class="fab-main" onclick="QuickAction.toggle()"><span class="material-icons-round">add</span></button></div>
-        <button class="nav-item" onclick="Router.go('action_feed')"><span class="material-icons-round">restaurant</span><span class="nav-label">餵食</span></button>
-        <button class="nav-item" onclick="System.toggleSidebar()"><span class="material-icons-round">menu</span><span class="nav-label">選單</span></button>
+        <button class="nav-item active" onclick="Router.go('dashboard')">
+            <span class="material-icons-round">dashboard</span><span class="nav-label">首頁</span>
+        </button>
+        <button class="nav-item" onclick="Router.go('map')">
+            <span class="material-icons-round">map</span><span class="nav-label">地圖</span>
+        </button>
+        <div class="fab-wrapper">
+            <button class="fab-main" onclick="QuickAction.toggle()"><span class="material-icons-round">add</span></button>
+        </div>
+        <button class="nav-item" onclick="Router.go('flora')">
+            <span class="material-icons-round">local_florist</span><span class="nav-label">植物</span>
+        </button>
+        <button class="nav-item" onclick="System.toggleSidebar()">
+            <span class="material-icons-round">menu</span><span class="nav-label">更多</span>
+        </button>
     </nav>
 
     <div id="quickSheet" class="quick-sheet hidden">
         <div class="sheet-grid">
-            <button onclick="Router.go('action_feed'); QuickAction.toggle();"><span class="material-icons-round color-orange">restaurant</span>餵食</button>
-            <button onclick="Router.go('action_harvest'); QuickAction.toggle();"><span class="material-icons-round color-green">opacity</span>採收</button>
-            <button onclick="alert('功能開發中'); QuickAction.toggle();"><span class="material-icons-round color-blue">search</span>巡場</button>
+            <button onclick="Router.go('action_feed'); QuickAction.toggle()"><span class="material-icons-round color-orange">restaurant</span>餵食</button>
+            <button onclick="Router.go('map'); QuickAction.toggle()"><span class="material-icons-round color-blue">search</span>巡場</button>
+            <button onclick="Router.go('health'); QuickAction.toggle()"><span class="material-icons-round color-red">healing</span>用藥</button>
+            <button onclick="Router.go('action_harvest'); QuickAction.toggle()"><span class="material-icons-round color-green">opacity</span>採收</button>
+            <button onclick="Log.quick('筆記')"><span class="material-icons-round color-purple">edit</span>筆記</button>
             <button onclick="QuickAction.toggle()"><span class="material-icons-round color-grey">close</span>取消</button>
         </div>
     </div>
 
     <div id="notifPanel" class="notif-panel hidden">
-        <div class="notif-header"><h3>智慧通知</h3></div>
-        <div id="notifList" class="notif-list"></div>
+        <div class="notif-header">
+            <h3>通知中心</h3>
+            <button onclick="NotificationCenter.toggle()" class="icon-btn"><span class="material-icons-round">close</span></button>
+        </div>
+        <div id="notifList" class="notif-list">
+            <div class="notif-item info">
+                <span class="material-icons-round">info</span>
+                <div><h4>歡迎使用 V28.0</h4><p>系統升級完成</p></div>
+            </div>
+        </div>
     </div>
 
-    <div id="overlay" class="overlay hidden" onclick="System.closeAll()"></div>
+    <div id="hiveModal" class="overlay hidden">
+        <div class="glass-panel hive-modal-box">
+            <div class="modal-header">
+                <h2 id="modalTitle">📦 讀取中...</h2>
+                <button class="icon-btn" onclick="HiveOS.close()"><span class="material-icons-round">close</span></button>
+            </div>
+            
+            <div class="hive-status-bar">
+                <div class="status-tag green">👑 新王</div>
+                <div class="status-tag yellow">🐝 7 框</div>
+                <div class="status-tag blue">⚖️ 25kg</div>
+            </div>
+
+            <div class="hive-tabs">
+                <button class="tab-btn active" onclick="HiveOS.switch('check')">檢查</button>
+                <button class="tab-btn" onclick="HiveOS.switch('feed')">餵食</button>
+                <button class="tab-btn" onclick="HiveOS.switch('history')">履歷</button>
+            </div>
+
+            <div id="hive-tab-content" class="hive-content">
+                </div>
+
+            <button class="btn-main" onclick="HiveOS.save()">💾 儲存單箱紀錄</button>
+        </div>
+    </div>
+
+    <div id="overlay" class="overlay hidden" onclick="System.closeAllOverlays()"></div>
+
     <script src="script.js"></script>
 </body>
 </html>
