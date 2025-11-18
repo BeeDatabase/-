@@ -3,11 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>蜂場專家 V300 - 終極全功能</title>
+    <title>蜂場專家 - 終極重生版 V500</title>
     <meta name="theme-color" content="#1a1a1a">
-    <link rel="stylesheet" href="style.css">
+    
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <link rel="stylesheet" href="style.css?v=500">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
@@ -15,11 +21,13 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
+
     <div id="splashScreen" class="splash-screen">
         <div class="splash-content">
             <div class="logo-hexagon"><span class="material-icons-round">hive</span></div>
-            <div class="splash-text"><h1>蜂場專家</h1><p>V300.0 完整資料庫載入中...</p></div>
+            <div class="splash-text"><h1>蜂場專家</h1><p>V500.0 強制重載中...</p></div>
             <div class="loading-bar"><div class="progress"></div></div>
+            <button onclick="forceClearCache()" style="margin-top:20px; background:red; color:white; border:none; padding:10px; border-radius:5px;">若卡住請點此強制修復</button>
         </div>
     </div>
 
@@ -29,54 +37,84 @@
             <h2>使用者登入</h2>
             <div class="input-group"><input type="text" id="loginName" class="input-field" placeholder="您的暱稱"></div>
             <div class="input-group"><select id="loginRole" class="input-field"><option value="admin">👨‍🌾 場長 (Admin)</option><option value="staff">👷‍♂️ 助手 (Staff)</option></select></div>
+            <div class="input-group" style="text-align:center;">
+                <span onclick="Auth.setAvatar('👨‍🌾')" class="avatar-opt">👨‍🌾</span>
+                <span onclick="Auth.setAvatar('👩‍🌾')" class="avatar-opt">👩‍🌾</span>
+                <span onclick="Auth.setAvatar('🐝')" class="avatar-opt">🐝</span>
+            </div>
             <button class="btn-main" onclick="Auth.login()">進入系統</button>
         </div>
     </div>
 
     <aside class="sidebar">
-        <div class="brand-area"><div class="logo-icon"><span class="material-icons-round">workspace_premium</span></div><div class="brand-text"><h2>蜂場專家</h2><small>V300.0</small></div></div>
+        <div class="brand-area">
+            <div class="logo-icon"><span class="material-icons-round">workspace_premium</span></div>
+            <div class="brand-text"><h2>蜂場專家</h2><small>V500.0 Ultimate</small></div>
+        </div>
         <div class="nav-scroll-area">
-            <div class="nav-group">核心</div>
+            <div class="nav-group">核心管理</div>
             <button class="nav-btn active" onclick="Router.go('dashboard')"><span class="material-icons-round">dashboard</span>營運總覽</button>
             <button class="nav-btn" onclick="Router.go('map')"><span class="material-icons-round">map</span>蜂場地圖</button>
             <button class="nav-btn" onclick="Router.go('tasks')"><span class="material-icons-round">assignment</span>工作排程</button>
             <button class="nav-btn" onclick="Router.go('chat')"><span class="material-icons-round">forum</span>內部留言</button>
-            <div class="nav-group">技術</div>
+
+            <div class="nav-group">知識與教育</div>
+            <button class="nav-btn" onclick="Router.go('guide')"><span class="material-icons-round">school</span>盲點與誤區</button>
+            <button class="nav-btn" onclick="Router.go('flora')"><span class="material-icons-round">local_florist</span>蜜源植物圖鑑</button>
+
+            <div class="nav-group">生產技術</div>
             <button class="nav-btn" onclick="Router.go('breeding')"><span class="material-icons-round">pets</span>育王管理</button>
             <button class="nav-btn" onclick="Router.go('health')"><span class="material-icons-round">medical_services</span>病害防治</button>
             <button class="nav-btn" onclick="Router.go('production')"><span class="material-icons-round">factory</span>生產紀錄</button>
             <button class="nav-btn" onclick="Router.go('inventory')"><span class="material-icons-round">inventory_2</span>資材庫存</button>
-            <div class="nav-group">商業</div>
+
+            <div class="nav-group">商業與資源</div>
             <button class="nav-btn" onclick="Router.go('crm')"><span class="material-icons-round">groups</span>客戶訂單</button>
             <button class="nav-btn role-admin" onclick="Router.go('finance')"><span class="material-icons-round">monetization_on</span>財務報表</button>
-            <div class="nav-group">知識</div>
-            <button class="nav-btn" onclick="Router.go('flora')"><span class="material-icons-round">local_florist</span>蜜源植物</button>
-            <button class="nav-btn" onclick="Router.go('guide')"><span class="material-icons-round">school</span>養蜂百科</button>
-            <div class="nav-group">戰略</div>
-            <button class="nav-btn" onclick="Router.go('compliance')"><span class="material-icons-round">gavel</span>法規合規</button>
+            
+            <div class="nav-group">台灣在地法規</div>
+            <button class="nav-btn" onclick="Router.go('land')"><span class="material-icons-round">terrain</span>林地與租賃</button>
+            <button class="nav-btn" onclick="Router.go('compliance')"><span class="material-icons-round">gavel</span>法規與農藥</button>
             <button class="nav-btn" onclick="Router.go('logistics')"><span class="material-icons-round">local_shipping</span>轉場運輸</button>
-            <button class="nav-btn" onclick="Router.go('risk')"><span class="material-icons-round">security</span>風險管理</button>
-            <button class="nav-btn" onclick="Router.go('land')"><span class="material-icons-round">terrain</span>場地管理</button>
+            <button class="nav-btn" onclick="Router.go('risk')"><span class="material-icons-round">security</span>風險與防熊</button>
+
+            <div class="nav-group">系統</div>
             <button class="nav-btn" onclick="Router.go('esg')"><span class="material-icons-round">eco</span>永續經營</button>
             <button class="nav-btn" onclick="Router.go('science')"><span class="material-icons-round">science</span>環境氣象</button>
             <button class="nav-btn" onclick="Router.go('settings')"><span class="material-icons-round">settings_suggest</span>系統設定</button>
+            <button class="nav-btn" onclick="Auth.logout()" style="color:var(--danger); margin-top:20px;"><span class="material-icons-round">logout</span>登出</button>
         </div>
     </aside>
 
     <main class="main-window">
+        <div id="dynamicBg" class="dynamic-bg"></div>
         <header class="top-header">
-            <div class="header-left"><button class="mobile-menu-btn" onclick="System.toggleSidebar()"><span class="material-icons-round">menu</span></button><h2 id="pageTitle">營運總覽</h2></div>
-            <div class="header-right"><button class="icon-btn" onclick="Radio.toggle()"><span class="material-icons-round" id="radioIcon">music_note</span></button><button class="icon-btn" onclick="NotificationCenter.toggle()" style="position:relative;"><span class="material-icons-round">notifications</span><span id="notifDot" class="notif-dot hidden"></span></button><button class="icon-btn" onclick="System.toggleTheme()"><span class="material-icons-round">dark_mode</span></button></div>
+            <div class="header-left">
+                <button class="mobile-menu-btn" onclick="System.toggleSidebar()"><span class="material-icons-round">menu</span></button>
+                <h2 id="pageTitle">營運總覽</h2>
+                <div class="status-badge online">Online</div>
+            </div>
+            <div class="header-right">
+                <button class="icon-btn" onclick="Radio.toggle()" title="白噪音"><span class="material-icons-round" id="radioIcon">music_note</span></button>
+                <button class="icon-btn" onclick="NotificationCenter.toggle()" style="position:relative;">
+                    <span class="material-icons-round">notifications</span><span id="notifDot" class="notif-dot hidden"></span>
+                </button>
+                <button class="icon-btn" onclick="System.toggleTheme()"><span class="material-icons-round">dark_mode</span></button>
+            </div>
         </header>
         <div id="app-content" class="content-area"></div>
-        <div id="beeCompanion" class="bee-companion" onclick="Bee.talk()"><div class="bee-avatar">🐝</div><div id="beeBubble" class="bee-bubble hidden"></div></div>
+        
+        <div id="beeCompanion" class="bee-companion" onclick="Bee.talk()">
+            <div class="bee-avatar">🐝</div>
+            <div id="beeBubble" class="bee-bubble hidden"></div>
+        </div>
     </main>
 
     <nav class="bottom-nav">
         <button class="nav-item active" onclick="Router.go('dashboard')"><span class="material-icons-round">dashboard</span><span class="nav-label">首頁</span></button>
         <button class="nav-item" onclick="Router.go('map')"><span class="material-icons-round">map</span><span class="nav-label">地圖</span></button>
-        <button class="nav-item" onclick="QuickAction.toggle()"><span class="material-icons-round">add_circle</span><span class="nav-label">新增</span></button>
-        <button class="nav-item" onclick="Router.go('inventory')"><span class="material-icons-round">inventory_2</span><span class="nav-label">庫存</span></button>
+        <div class="fab-wrapper"><button class="fab-main" onclick="QuickAction.toggle()"><span class="material-icons-round">add</span></button></div>
+        <button class="nav-item" onclick="Router.go('flora')"><span class="material-icons-round">local_florist</span><span class="nav-label">植物</span></button>
         <button class="nav-item" onclick="System.toggleSidebar()"><span class="material-icons-round">menu</span><span class="nav-label">更多</span></button>
     </nav>
 
@@ -90,26 +128,56 @@
             <button onclick="QuickAction.toggle()"><span class="material-icons-round color-grey">close</span>取消</button>
         </div>
     </div>
-    <div id="notifPanel" class="notif-panel hidden"><div class="notif-header"><h3>通知中心</h3><button onclick="NotificationCenter.toggle()" class="icon-btn"><span class="material-icons-round">close</span></button></div><div id="notifList" class="notif-list"></div></div>
+    <div id="notifPanel" class="notif-panel hidden">
+        <div class="notif-header"><h3>通知中心</h3><button onclick="NotificationCenter.toggle()" class="icon-btn"><span class="material-icons-round">close</span></button></div>
+        <div id="notifList" class="notif-list"></div>
+    </div>
     
     <div id="hiveModal" class="overlay hidden">
         <div class="glass-panel hive-modal-box">
-            <div class="modal-header"><h2 id="modalTitle">📦 管理</h2><button class="icon-btn" onclick="HiveOS.close()"><span class="material-icons-round">close</span></button></div>
+            <div class="modal-header"><h2 id="modalTitle">📦 讀取中...</h2><button class="icon-btn" onclick="HiveOS.close()"><span class="material-icons-round">close</span></button></div>
             <div id="hiveStatusTags" class="hive-status-tags"></div>
             <div class="hive-tabs"><button class="tab-btn active" onclick="HiveOS.switch('check')">檢查</button><button class="tab-btn" onclick="HiveOS.switch('feed')">餵食</button><button class="tab-btn" onclick="HiveOS.switch('meds')">醫療</button><button class="tab-btn" onclick="HiveOS.switch('history')">履歷</button></div>
             <div id="hive-tab-content" class="hive-content"></div>
-            <div style="padding:10px 20px 20px; display:flex; gap:10px;"><button class="btn-main" style="background:var(--danger); margin:0" onclick="HiveOS.share()">🆘 諮詢</button><button class="btn-main" style="margin:0" onclick="HiveOS.save()">💾 儲存</button></div>
+            <div style="padding:0 20px 20px; display:flex; gap:10px;">
+                <button class="btn-main" style="background:var(--danger); margin:0;" onclick="HiveOS.shareForConsultation()">🆘 諮詢</button>
+                <button class="btn-main" style="margin:0;" onclick="HiveOS.save()">💾 儲存</button>
+            </div>
         </div>
     </div>
-    
-    <div id="qrModal" class="overlay hidden"><div class="glass-panel hive-modal-box"><div class="modal-header"><h2>📲 數位轉移</h2><button class="icon-btn" onclick="QRCodeModal.close()"><span class="material-icons-round">close</span></button></div><div class="hive-content" style="text-align:center;"><div id="qrcode" style="display:inline-block;padding:10px;background:#fff;border-radius:8px;margin:15px 0;"></div><p>請掃描 QR Code</p></div></div></div>
-    <div id="importModal" class="overlay hidden"><div class="glass-panel hive-modal-box"><div class="modal-header"><h2>📤 還原資料</h2><button class="icon-btn" onclick="System.closeAllOverlays()"><span class="material-icons-round">close</span></button></div><div class="hive-content"><textarea id="importRawData" class="input-field" rows="8" placeholder="貼上 JSON 資料..."></textarea><button class="btn-main" style="background:var(--danger);" onclick="Utils.importData()">⚠️ 確認還原</button></div></div></div>
+
+    <div id="qrModal" class="overlay hidden"><div class="glass-panel hive-modal-box"><div class="modal-header"><h2 id="qrModalTitle">📲 數位轉移</h2><button class="icon-btn" onclick="QRCodeModal.close()"><span class="material-icons-round">close</span></button></div><div class="hive-content" style="text-align:center;"><div id="qrcode" style="display:inline-block;padding:10px;background:#fff;border-radius:8px;margin:15px 0;"></div><p>請掃描 QR Code</p></div></div></div>
+    <div id="importModal" class="overlay hidden"><div class="glass-panel hive-modal-box"><div class="modal-header"><h2>📤 還原資料</h2><button class="icon-btn" onclick="System.closeAllOverlays()"><span class="material-icons-round">close</span></button></div><div class="hive-content"><textarea id="importRawData" class="input-field" rows="8" placeholder="貼上原始資料..."></textarea><button class="btn-main" style="background:var(--danger);" onclick="Utils.importData()">⚠️ 確認還原</button></div></div></div>
+    <div id="exportModuleModal" class="overlay hidden"><div class="glass-panel hive-modal-box"><div class="modal-header"><h2>🔍 數據切片</h2><button class="icon-btn" onclick="System.closeAllOverlays()"><span class="material-icons-round">close</span></button></div><div class="hive-content"><select id="moduleSelect" class="input-field"><option value="hives">蜂箱數據</option><option value="finance">財務</option><option value="logs">日誌</option></select><button class="btn-main" onclick="Utils.copySpecificModuleData()">📋 複製數據</button></div></div></div>
     
     <audio id="bgMusic" loop><source src="https://assets.mixkit.co/sfx/preview/mixkit-forest-birds-ambience-1210.mp3" type="audio/mpeg"></audio>
-    <div id="updateToast" class="update-toast hidden"><div class="toast-content"><span class="material-icons-round">system_update</span><span>V300.0 已就緒！</span></div><button id="updateBtn" class="btn-update">更新</button></div>
+    <div id="updateToast" class="update-toast hidden"><div class="toast-content"><span class="material-icons-round">system_update</span><span>發現 V500.0，請更新！</span></div><button id="updateBtn" class="btn-update">立即更新</button></div>
     <div id="overlay" class="overlay hidden" onclick="System.closeAllOverlays()"></div>
-    
-    <script src="script.js"></script>
-    <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').then(r=>{r.onupdatefound=()=>{const w=r.installing;w.onstatechange=()=>{if(w.state==='installed'&&navigator.serviceWorker.controller)document.getElementById('updateToast').classList.remove('hidden')}}});let rf;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(rf)return;window.location.reload();rf=true});document.getElementById('updateBtn').addEventListener('click',()=>{navigator.serviceWorker.controller.postMessage({type:'SKIP_WAITING'})})}</script>
+
+    <script src="script.js?v=500"></script>
+
+    <script>
+        function forceClearCache() {
+            if(confirm('確定要強制重置嗎？這會清除所有快取！')) {
+                navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                    for(let registration of registrations) { registration.unregister(); }
+                });
+                caches.keys().then(keys => {
+                    keys.forEach(key => caches.delete(key));
+                });
+                window.location.reload(true);
+            }
+        }
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js?v=500').then(reg => {
+                reg.onupdatefound = () => {
+                    const worker = reg.installing;
+                    worker.onstatechange = () => { if (worker.state === 'installed' && navigator.serviceWorker.controller) document.getElementById('updateToast').classList.remove('hidden'); };
+                };
+            });
+            let refreshing; navigator.serviceWorker.addEventListener('controllerchange', () => { if (refreshing) return; window.location.reload(); refreshing = true; });
+            document.getElementById('updateBtn').addEventListener('click', () => { navigator.serviceWorker.controller.postMessage({type:'SKIP_WAITING'}); });
+        }
+    </script>
 </body>
 </html>
