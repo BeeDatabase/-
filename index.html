@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>蜂場專家 - 智慧管理系統</title>
     <meta name="theme-color" content="#1a1a1a">
-    <meta name="description" content="台灣頂級養蜂數位雙胞胎系統 V43.0">
-
+    
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -16,20 +15,12 @@
 </head>
 <body>
 
-    <div id="updateToast" class="update-toast hidden">
-        <div class="toast-content">
-            <span class="material-icons-round">system_update</span>
-            <span>發現新版本 V43.0，請更新以獲得最新功能！</span>
-        </div>
-        <button onclick="window.location.reload()" class="btn-update">立即更新</button>
-    </div>
-
     <div id="splashScreen" class="splash-screen">
         <div class="splash-content">
             <div class="logo-hexagon"><span class="material-icons-round">hive</span></div>
             <div class="splash-text">
                 <h1>蜂場專家</h1>
-                <p>正在檢查更新...</p>
+                <p id="loadingText">系統載入中...</p>
             </div>
             <div class="loading-bar"><div class="progress"></div></div>
         </div>
@@ -40,7 +31,7 @@
             <div class="logo-icon"><span class="material-icons-round">workspace_premium</span></div>
             <div class="brand-text">
                 <h2>蜂場專家</h2>
-                <small>V43.0 Auto-Update</small>
+                <small>V46.0 Auto-Sync</small>
             </div>
         </div>
         
@@ -59,13 +50,14 @@
             <div class="nav-group">商業與資源</div>
             <button class="nav-btn" onclick="Router.go('crm')"><span class="material-icons-round">groups</span>客戶訂單</button>
             <button class="nav-btn" onclick="Router.go('finance')"><span class="material-icons-round">monetization_on</span>財務報表</button>
-            <button class="nav-btn" onclick="Router.go('land')"><span class="material-icons-round">terrain</span>場地管理</button>
-            <button class="nav-btn" onclick="Router.go('compliance')"><span class="material-icons-round">gavel</span>法規合規</button>
+            <button class="nav-btn" onclick="Router.go('flora')"><span class="material-icons-round">local_florist</span>蜜源植物圖鑑</button>
+            <button class="nav-btn" onclick="Router.go('science')"><span class="material-icons-round">science</span>環境氣象</button>
             
             <div class="nav-group">戰略與系統</div>
             <button class="nav-btn" onclick="Router.go('logistics')"><span class="material-icons-round">local_shipping</span>轉場運輸</button>
-            <button class="nav-btn" onclick="Router.go('science')"><span class="material-icons-round">science</span>環境氣象</button>
+            <button class="nav-btn" onclick="Router.go('compliance')"><span class="material-icons-round">gavel</span>法規合規</button>
             <button class="nav-btn" onclick="Router.go('risk')"><span class="material-icons-round">security</span>風險管理</button>
+            <button class="nav-btn" onclick="Router.go('land')"><span class="material-icons-round">terrain</span>場地管理</button>
             <button class="nav-btn" onclick="Router.go('esg')"><span class="material-icons-round">eco</span>永續經營</button>
             <button class="nav-btn" onclick="Router.go('settings')"><span class="material-icons-round">settings_suggest</span>系統設定</button>
         </div>
@@ -125,6 +117,11 @@
             <button class="btn-main" onclick="HiveOS.save()">💾 儲存紀錄</button>
         </div>
     </div>
+    
+    <div id="updateToast" class="update-toast hidden">
+        <div class="toast-content"><span class="material-icons-round">system_update</span><span>正在升級系統...</span></div>
+    </div>
+    
     <div id="overlay" class="overlay hidden" onclick="System.closeAllOverlays()"></div>
 
     <script src="script.js"></script>
@@ -132,24 +129,26 @@
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js').then(reg => {
-                console.log('SW Registered');
-                // 偵測是否有新版本
-                reg.onupdatefound = () => {
+                
+                // 監聽新版本狀態
+                reg.addEventListener('updatefound', () => {
                     const newWorker = reg.installing;
-                    newWorker.onstatechange = () => {
+                    newWorker.addEventListener('statechange', () => {
                         if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                            // 發現新版本，顯示更新通知
+                            // 新版已安裝，顯示提示
                             document.getElementById('updateToast').classList.remove('hidden');
+                            // 這裡不做任何事，因為 sw.js 裡的 skipWaiting 會自動觸發下面的 controllerchange
                         }
-                    };
-                };
+                    });
+                });
             });
-            // 重新整理後自動使用新版
+
+            // 當 Service Worker 改變 (代表新版已接手)，自動重整
             let refreshing;
             navigator.serviceWorker.addEventListener('controllerchange', () => {
                 if (refreshing) return;
-                window.location.reload();
                 refreshing = true;
+                window.location.reload();
             });
         }
     </script>
