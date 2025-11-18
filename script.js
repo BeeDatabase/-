@@ -1,11 +1,13 @@
 /**
- * BEE EXPERT - SMART SYSTEM CORE V19.0
- * RWD & Professional Edition
+ * BEE EXPERT - SMART SYSTEM CORE V19.1
+ * Naming Convention: Professional Business Terms
  */
 
 const System = {
     init: function() {
-        // 1. 移除載入畫面
+        console.log("System Starting...");
+        
+        // 1. 強制移除載入畫面
         setTimeout(() => {
             const splash = document.getElementById('splashScreen');
             if(splash) {
@@ -14,11 +16,11 @@ const System = {
             }
         }, 1500);
 
-        // 2. 路由啟動
+        // 2. 啟動路由
         const lastPage = localStorage.getItem('bee_last_page') || 'dashboard';
         Router.go(lastPage);
         
-        // 3. 天氣模擬
+        // 3. 啟動時鐘
         this.startClock();
         
         // 4. 自動儲存
@@ -32,7 +34,7 @@ const System = {
         overlay.classList.toggle('hidden');
     },
 
-    toggleTheme: function() { alert("目前為專業深色模式"); },
+    toggleTheme: function() { alert("目前預設為深色專業模式"); },
 
     toggleFullScreen: function() {
         if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(e=>{});
@@ -63,14 +65,12 @@ const System = {
 
 const Router = {
     go: function(pageId) {
-        // UI 更新
         document.querySelectorAll('.nav-btn, .nav-item').forEach(el => el.classList.remove('active'));
         const deskBtn = document.querySelector(`.nav-btn[onclick="Router.go('${pageId}')"]`);
         const mobBtn = document.querySelector(`.nav-item[onclick="Router.go('${pageId}')"]`);
         if(deskBtn) deskBtn.classList.add('active');
         if(mobBtn) mobBtn.classList.add('active');
 
-        // 渲染內容
         const content = document.getElementById('app-content');
         const title = document.getElementById('pageTitle');
         
@@ -79,6 +79,7 @@ const Router = {
             setTimeout(() => {
                 if(Modules[pageId]) {
                     content.innerHTML = Modules[pageId].render();
+                    // 這裡會使用更新後的專業名稱
                     if(title) title.innerText = Modules[pageId].title;
                     if(Modules[pageId].init) Modules[pageId].init();
                     Utils.restoreData();
@@ -93,7 +94,6 @@ const Router = {
             }, 200);
         }
         
-        // 手機版自動收起側邊欄
         if(window.innerWidth <= 1024) {
             document.querySelector('.sidebar').classList.remove('open');
             document.getElementById('overlay').classList.add('hidden');
@@ -102,9 +102,10 @@ const Router = {
     }
 };
 
+// --- 模組定義 (名稱正名) ---
 const Modules = {
     dashboard: {
-        title: '營運總覽',
+        title: '營運總覽', // 修正：戰情儀表板 -> 營運總覽
         render: () => `
             <div class="grid-4">
                 <div class="glass-panel" style="border-left: 4px solid var(--primary)">
@@ -155,7 +156,7 @@ const Modules = {
     },
     
     map: {
-        title: '蜂場地圖',
+        title: '蜂場地圖', // 修正：視覺化地圖 -> 蜂場地圖
         render: () => `
             <div class="glass-panel">
                 <div style="margin-bottom:15px; display:flex; gap:15px;">
@@ -163,7 +164,7 @@ const Modules = {
                     <span style="color:var(--warning)">● 普通</span>
                     <span style="color:var(--danger)">● 需注意</span>
                 </div>
-                <div id="hiveGrid" class="grid-auto"></div>
+                <div id="hiveGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap:10px;"></div>
             </div>
         `,
         init: () => {
@@ -178,7 +179,7 @@ const Modules = {
     },
 
     breeding: {
-        title: '育王管理',
+        title: '育王管理', // 修正：精密育王 -> 育王管理
         render: () => `
             <div class="glass-panel">
                 <div class="panel-title">🧬 育王時間軸</div>
@@ -206,7 +207,7 @@ const Modules = {
             document.getElementById('breedResult').style.display = 'block';
         }
     },
-    
+
     inventory: {
         title: '資材庫存',
         render: () => `
@@ -219,11 +220,11 @@ const Modules = {
         `,
         init: () => {}
     },
-    
+
     production: {
-        title: '生產紀錄',
+        title: '生產紀錄', // 修正：生產加工 -> 生產紀錄
         render: () => `
-             <div class="glass-panel">
+            <div class="glass-panel">
                 <div class="panel-title">🍯 批號生成</div>
                 <div class="input-group">
                     <select class="input-field"><option>龍眼蜜</option><option>荔枝蜜</option></select>
@@ -234,7 +235,7 @@ const Modules = {
         `,
         init: () => {}
     },
-    
+
     settings: {
         title: '系統設定',
         render: () => `
