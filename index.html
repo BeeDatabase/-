@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>蜂場專家 - 智慧管理系統</title>
     <meta name="theme-color" content="#1a1a1a">
-    <meta name="description" content="台灣頂級養蜂數位雙胞胎系統 V40.0">
+    <meta property="og:title" content="蜂場專家 - 智慧管理系統">
+    <meta name="description" content="台灣頂級養蜂數位雙胞胎系統 V41.0">
 
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
@@ -32,7 +33,7 @@
             <div class="logo-icon"><span class="material-icons-round">workspace_premium</span></div>
             <div class="brand-text">
                 <h2>蜂場專家</h2>
-                <small>V40.0 Final</small>
+                <small>V41.0 Enterprise</small>
             </div>
         </div>
         
@@ -51,13 +52,13 @@
             <div class="nav-group">商業與資源</div>
             <button class="nav-btn" onclick="Router.go('crm')"><span class="material-icons-round">groups</span>客戶訂單</button>
             <button class="nav-btn" onclick="Router.go('finance')"><span class="material-icons-round">monetization_on</span>財務報表</button>
-            <button class="nav-btn" onclick="Router.go('logistics')"><span class="material-icons-round">local_shipping</span>轉場運輸</button>
-
-            <div class="nav-group">環境與法規</div>
-            <button class="nav-btn" onclick="Router.go('science')"><span class="material-icons-round">science</span>環境氣象</button>
-            <button class="nav-btn" onclick="Router.go('compliance')"><span class="material-icons-round">gavel</span>法規合規</button>
-            <button class="nav-btn" onclick="Router.go('risk')"><span class="material-icons-round">security</span>風險管理</button>
             <button class="nav-btn" onclick="Router.go('land')"><span class="material-icons-round">terrain</span>場地管理</button>
+            <button class="nav-btn" onclick="Router.go('compliance')"><span class="material-icons-round">gavel</span>法規合規</button>
+            
+            <div class="nav-group">戰略與系統</div>
+            <button class="nav-btn" onclick="Router.go('logistics')"><span class="material-icons-round">local_shipping</span>轉場運輸</button>
+            <button class="nav-btn" onclick="Router.go('science')"><span class="material-icons-round">science</span>環境氣象</button>
+            <button class="nav-btn" onclick="Router.go('risk')"><span class="material-icons-round">security</span>風險管理</button>
             <button class="nav-btn" onclick="Router.go('esg')"><span class="material-icons-round">eco</span>永續經營</button>
             <button class="nav-btn" onclick="Router.go('settings')"><span class="material-icons-round">settings_suggest</span>系統設定</button>
         </div>
@@ -68,7 +69,7 @@
             <div class="header-left">
                 <button class="mobile-menu-btn" onclick="System.toggleSidebar()"><span class="material-icons-round">menu</span></button>
                 <h2 id="pageTitle">營運總覽</h2>
-                <div class="status-badge online">Online</div>
+                <div class="status-badge online">系統連線正常</div>
             </div>
             <div class="header-right">
                 <div class="weather-widget glass-pill">
@@ -90,7 +91,7 @@
         <button class="nav-item active" onclick="Router.go('dashboard')"><span class="material-icons-round">dashboard</span><span class="nav-label">首頁</span></button>
         <button class="nav-item" onclick="Router.go('map')"><span class="material-icons-round">map</span><span class="nav-label">地圖</span></button>
         <div class="fab-wrapper"><button class="fab-main" onclick="QuickAction.toggle()"><span class="material-icons-round">add</span></button></div>
-        <button class="nav-item" onclick="Router.go('flora')"><span class="material-icons-round">local_florist</span><span class="nav-label">植物</span></button>
+        <button class="nav-item" onclick="Router.go('inventory')"><span class="material-icons-round">inventory_2</span><span class="nav-label">庫存</span></button>
         <button class="nav-item" onclick="System.toggleSidebar()"><span class="material-icons-round">menu</span><span class="nav-label">更多</span></button>
     </nav>
 
@@ -120,13 +121,5 @@
     <div id="overlay" class="overlay hidden" onclick="System.closeAllOverlays()"></div>
 
     <script src="script.js"></script>
-
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js')
-                .then(reg => console.log('✅ SW Registered: ' + reg.scope))
-                .catch(err => console.error('❌ SW Failed:', err));
-        }
-    </script>
 </body>
 </html>
